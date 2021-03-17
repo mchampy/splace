@@ -3,12 +3,52 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@app-masters/react-cloudinary-uploader": "^0.1.41",
+    "@date-io/date-fns": "^1.3.13",
+    "@date-io/moment": "^1.3.13",
+    "@fortawesome/fontawesome-svg-core": "^1.2.34",
+    "@fortawesome/free-solid-svg-icons": "^5.15.2",
+    "@fortawesome/react-fontawesome": "^0.1.14",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/pickers": "^3.3.10",
+    "@mobiscroll/react-lite": "^4.10.8",
+    "@react-google-maps/api": "^2.1.1",
+    "@react-native-async-storage/async-storage": "^1.14.1",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.3",
+    "@wojtekmaj/react-timerange-picker": "^3.2.0",
+    "antd": "^4.14.0",
+    "bootstrap": "^4.6.0",
+    "cloudinary": "^1.25.0",
+    "cloudinary-core": "^2.11.3",
+    "cloudinary-react": "^1.7.0",
+    "date-fns": "^2.19.0",
+    "deck.gl": "^8.4.10",
+    "google-maps-react": "^2.0.6",
+    "leaflet": "^1.7.1",
+    "mobiscroll": "^3.0.0-beta6",
+    "moment": "^2.29.1",
+    "pigeon-maps": "^0.17.1",
+    "profile-picture": "git+https://github.com/dsalvagni/react-profile-picture.git",
     "react": "^17.0.1",
+    "react-bootstrap": "^1.5.2",
+    "react-cloudinary-upload-widget": "^1.4.3",
+    "react-datepicker": "^3.6.0",
     "react-dom": "^17.0.1",
+    "react-google-maps": "^9.4.5",
+    "react-icons": "^4.2.0",
+    "react-image-input": "^0.1.0",
+    "react-images-upload": "^1.2.8",
+    "react-leaflet": "^3.1.0",
+    "react-map-gl": "^6.1.10",
+    "react-redux": "^7.2.2",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-switch": "^6.0.0",
+    "react-upload-image-gallery": "0.0.1-beta.5",
+    "reactstrap": "^8.9.0",
+    "redux": "^4.0.5",
     "web-vitals": "^1.1.1"
   },
   "scripts": {
@@ -17,6 +57,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "proxy": "http://localhost:3000",
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -34,5 +75,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.7.0"
   }
 }

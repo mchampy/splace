@@ -1,38 +1,101 @@
-.App {
-  text-align: center;
+
+@import '~antd/dist/antd.css';
+
+html, body{
+  overflow:'hidden';
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.scrollable {
+  top: 0;
+    bottom:0;
+    position:fixed;
+    overflow-y:scroll;
+    margin-top:180px;
+    width:500px;
+    min-width: 100px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+h4 {
+  color: #F4B223;
+  font-weight: bold
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.Login-page{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height:100vh;
+    background-color: linear-gradient(linear, left top, right top, from(rgba(255,188,62,1)), color-stop(rgba(255,67,67,1)));
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+
+    }
+
+.Login-input{
+  margin: 15px;
+}
+
+.Sign {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: linear-gradient(linear, left top, right top from(rgba(255,188,62,1)), color-stop(rgba(255,67,67,1)));
+    padding-bottom: 15px;
+    border-radius: 25%;
+    margin: 40px;
+}
+
+.Sign .Login-input{
+  width: 250px;
+}
+
+.HomeThemes{
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-top: 20px;
+}
+
+.Banner {
+  height: 80px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.8;
+}
+
+.Card{
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-wrap: wrap;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  border-radius: 50%;
+  border-width: 3;
+  border-color: #F4B223;
+
+}
+
+.Button {
+  background-color: #F4B223;
+  border-radius: 7%;
   color: white;
+  border-color: #F4B223;
+  align-self: "flex-start";
+  height: 5vh;
+  width: 150px;
+  margin-left: 20;
+  margin-top: 10;
+  margin: 5px;
 }
 
-.App-link {
-  color: #61dafb;
-}
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+.react-datepicker {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.8rem;
+  background-color: #a66;
+  color: #000;
+
 }
