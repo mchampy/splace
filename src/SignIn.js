@@ -1,57 +1,41 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import './App.css';
-import {Input,Button,Card, Image } from 'antd';
+import {Input,Button,Card } from 'antd';
 import {Link, Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Logo from "./assets/logosplace.png";
 
 function SignIn(props) {
-  const [image, setImage] = useState(null);
-
-  const [listErrorsSignin, setErrorsSignin] = useState([]);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
 
   const [userExists, setUserExists] = useState(false);
-
-  const [signInEmail, setSignInEmail] = useState('')
-  const [signInPassword, setSignInPassword] = useState('')
+  const [listErrorsSignin, setErrorsSignin] = useState([]);
 
 
-  // const [listErrorsSignin, setErrorsSignin] = useState([])
-  // const [listErrorsSignup, setErrorsSignup] = useState([])
-
-  useEffect(() => {
-    console.log('voici limage a lactualisation', image)
-   }, [image]);
-
-  
   var handleSubmitSignin = async () => {
  
-    const data = await fetch('/sign-in', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
-    })
-
-    const body = await data.json()
-
-    if(body.result == true){
-      props.addToken(body.token)
-      setUserExists(true)
-      
-    }  else {
-      setErrorsSignin(body.error)
-    }
-  }
-
-  if(userExists){
-    return <Redirect to='/MapScreen' />
-  }
-
-  var tabErrorsSignin = listErrorsSignin.map((error,i) => {
-    return(<p>{error}</p>)
-  })
+      const data = await fetch(`/users/sign-in`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `email=${email}&password=${password}`
+      })
   
+      const body = await data.json()
+  
+      if (body.result == true) {
+        props.addToken(body.token)
+        setUserExists(true)
+  
+      } else {
+        setErrorsSignin(body.error)
+      }
+    }
+  
+    if (userExists) {
+      return <Redirect to='/MapScreen' />
+    }
+    
 
   return (
     <div className="Login-page" 
@@ -64,14 +48,14 @@ function SignIn(props) {
 
             <Card style={{width:'400px'}}>
                   
-            <Input onChange={(e) => setSignInEmail(e.target.value)} className="Login-input" style={{width:320}} placeholder="email" />
+            <Input onChange={(e) => setEmail(e.target.value)} className="Login-input" style={{width:320}} placeholder="email" />
 
-            <Input.Password onChange={(e) => setSignInPassword(e.target.value)} className="Login-input" style={{width:320}} placeholder="mot de passe" />
+            <Input.Password onChange={(e) => setPassword(e.target.value)} className="Login-input" style={{width:320}} placeholder="mot de passe" />
+
+            {listErrorsSignin}
             
-            {tabErrorsSignin}
-
             <div style={{display:'flex', justifyContent:'space-around'}}>
-            <Button  className="Button" onClick={() => handleSubmitSignin()}  >Se connecter</Button>
+            <Button  className="Button" onClick={() => handleSubmitSignin()} >Se connecter</Button>
             <Link to ='/signup'><Button  className="Button" style={{backgroundColor: 'white', color:'#F4B223'}}>Inscription</Button></Link>
             </div>
 

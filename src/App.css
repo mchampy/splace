@@ -10,7 +10,7 @@ html, body{
     bottom:0;
     position:fixed;
     overflow-y:scroll;
-    margin-top:180px;
+    margin-top:250px;
     width:500px;
     min-width: 100px;
 }

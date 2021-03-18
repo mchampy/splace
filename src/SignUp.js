@@ -3,7 +3,6 @@ import './App.css';
 import { Input, Button, Card } from 'antd';
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Logo from "./assets/logosplace.png";
 import DatePicker from "react-datepicker";
 
@@ -12,8 +11,6 @@ import { sportAssets } from "./App";
 import { CloudinaryContext, Image } from "cloudinary-react";
 import { fetchPhotos, openUploadWidget, url } from "./CloudinaryService";
 
-
-// Add style manually
 import 'react-upload-image-gallery/dist/style.css'
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -33,15 +30,17 @@ function SignUp(props) {
         {
             name: "Oui",
             isChosen: false,
+            bool: true
         },
         {
             name: "Non",
             isChosen: false,
+            bool: false
         },
     ]);
 
 
-
+// Handisport ou non 
     const handleHandi = (idx) => {
         const copy = [...handisport];
         const oldIdx = copy.findIndex((e) => e.isChosen);
@@ -160,6 +159,7 @@ function SignUp(props) {
         },
     ]);
 
+// Choix des sports favoris
     const handlePickFavourite = (idx) => {
         const copy = [...favourite];
         copy[idx].isPicked = !copy[idx].isPicked;
@@ -223,10 +223,40 @@ function SignUp(props) {
         })
     }
 
+    // const pickImage = async () => {
+    //     let result = await ImagePicker.launchImageLibraryAsync({
+    //       mediaTypes: ImagePicker.MediaTypeOptions.All,
+    //       allowsEditing: true,
+    //       aspect: [4, 3],
+    //       quality: 1,
+    
+    //     });
+    
+    //     console.log("résultat de pick image", result);
+    
+    //     if (!result.cancelled) {
+    
+    
+    //       setImage(result.uri);
+    //     }
+    
+    //     console.log('voici le lien de limage', image)
+    //     (async () => {
+    //       if (Platform.OS !== "web") {
+    //         const {
+    //           status,
+    //         } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    //         if (status !== "granted") {
+    //           alert("Sorry, we need camera roll permissions to make this work!");
+    //         }
+    //       }
+    //     })();
+    //   };
+
 
     useEffect(() => {
-        console.log('voici limage a lactualisation', image)
-    }, [image]);
+        console.log('voici limage a lactualisation', images)
+    }, [images]);
 
     const [gender, setGender] = useState([
         {
@@ -243,8 +273,7 @@ function SignUp(props) {
         },
     ]);
 
-
-
+    // Choix d'un seul sexe 
     const handleGender = (idx) => {
         const copy = [...gender];
         const oldIdx = copy.findIndex((e) => e.isChosen);
@@ -279,6 +308,9 @@ function SignUp(props) {
         >{e.name}</Button>
     ));
 
+    console.log('photoyeahh')
+
+    // Afficher l'âge quand la date de naissance est renseignée
     function getAge(birthDate) {
         var birthDate = anniversaryDate
         var today = new Date();
@@ -290,13 +322,17 @@ function SignUp(props) {
         return age
     }
 
-    console.log('des', descriptionUser)
-    console.log('userex', userExists)
-
+    // Envoi des informations au back pour le Sign-Up 
     var signUpToBack = async () => {
 
-        // const genderSelected = gender.find(e => e.isChosen).name
-        // const handiSelected = handisport.find(e => e.isChosen).name
+        let genderSelected = ''
+        if (gender.find(e => e.isChosen)) {
+        genderSelected = gender.find(e => e.isChosen).name}
+        
+        let handiSelected = ''
+        if (handisport.find(e => e.isChosen)) {
+        handiSelected = handisport.find(e => e.isChosen).bool}
+        
         console.log("envoi user vers le back");
         const data = await fetch(`/users/sign-up`, {
             method: "POST",
@@ -305,10 +341,10 @@ function SignUp(props) {
                 username: `${forname + ' ' + name}`,
                 email,
                 password,
-                // favoriteSports: favourite,
+                favoriteSports: favourite,
                 bio: descriptionUser,
-                // gender: genderSelected,
-                // handiSport: handiSelected,
+                gender: genderSelected,
+                handiSport: handiSelected,
                 birthday: anniversaryDate,
                 country: "fr",
                 phoneNumber: "065654343",
@@ -320,16 +356,15 @@ function SignUp(props) {
 
         if (body.result == true) {
             props.addToken(body.token);
-            setUserExists(true);
             console.log("log du token signup", body.token);
-            AsyncStorage.setItem("token", body.token)
+
             
-            // *** enregistrement de la photo en cloudinary puis db ***
+    // Enregistrement de la photo en cloudinary puis db ***
 
             var dataimage = new FormData();
 
             dataimage.append('photo', {
-                uri: image,
+                uri: images,
                 type: "image",
                 name: "photo",
                 token: body.token
@@ -358,7 +393,6 @@ if(userExists === false) {
             style={{ backgroundImage: 'linear-gradient(rgba(255,188,62,1), rgba(255,67,67,1))' }}>
             <img src={Logo} style={{ width: '400px', margin: '10px' }} alt='pic' />
 
-
             {/* SIGN-UP */}
 
             <div className="Sign">
@@ -382,6 +416,8 @@ if(userExists === false) {
                             className='react-datepicker'
                             placeholderText={getAge() + " ans"}
                             dateFormat="dd/MM/yyyy "
+                            showYearDropdown
+                            showMonthDropdown
                             onChange={date => setAnniversaryDate(date)} />
                     </div>
 
@@ -394,7 +430,6 @@ if(userExists === false) {
                                 <button onClick={() => beginUpload()}
                                     style={{ width: 80, height: 80, borderRadius: "50%", marginLeft: 20, padding: 0 }}
                                 >
-
                                     {images.map(i => <Image
                                         key={i}
                                         publicId={i}
@@ -407,9 +442,7 @@ if(userExists === false) {
                         <div>
                             <text style={{ marginLeft: 15 }}>Description : </text>
                             <div>
-                            <Input style={{ width: 400, height: 100 }} type="text" onChange={(e) => setDescriptionUser(e.target.value)}/>
-                                
-                                
+                            <Input style={{ width: 400, height: 100 }} onChange={(e) => setDescriptionUser(e.target.value)}/>
                             </div>
                         </div>
 
@@ -421,7 +454,6 @@ if(userExists === false) {
                     </div>
                     <div style={{ marginLeft: 15, marginTop: 15, marginBottom: 15 }}>
                         <text style={{ marginBottom: 10 }}>Handisport : </text>
-
                         {generateHandisport}
                         </div>
 
@@ -433,9 +465,8 @@ if(userExists === false) {
         </div>
     );
 } else {
-    <Redirect to= './mapscreen/'/>
+   return <Redirect to= './MapScreen/'/>
 }
-
 }
 
 function mapDispatchToProps(dispatch) {
