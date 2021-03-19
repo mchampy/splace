@@ -75,8 +75,6 @@ function SignUp(props) {
         >{e.name}</Button>
     ));
 
-    const [image, setImage] = useState([]);
-    const [ageUser, setAgeUser] = useState("     ");
 
     const [favourite, setFavourite] = useState([
         {
@@ -223,36 +221,6 @@ function SignUp(props) {
         })
     }
 
-    // const pickImage = async () => {
-    //     let result = await ImagePicker.launchImageLibraryAsync({
-    //       mediaTypes: ImagePicker.MediaTypeOptions.All,
-    //       allowsEditing: true,
-    //       aspect: [4, 3],
-    //       quality: 1,
-    
-    //     });
-    
-    //     console.log("résultat de pick image", result);
-    
-    //     if (!result.cancelled) {
-    
-    
-    //       setImage(result.uri);
-    //     }
-    
-    //     console.log('voici le lien de limage', image)
-    //     (async () => {
-    //       if (Platform.OS !== "web") {
-    //         const {
-    //           status,
-    //         } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    //         if (status !== "granted") {
-    //           alert("Sorry, we need camera roll permissions to make this work!");
-    //         }
-    //       }
-    //     })();
-    //   };
-
 
     useEffect(() => {
         console.log('voici limage a lactualisation', images)
@@ -308,8 +276,6 @@ function SignUp(props) {
         >{e.name}</Button>
     ));
 
-    console.log('photoyeahh')
-
     // Afficher l'âge quand la date de naissance est renseignée
     function getAge(birthDate) {
         var birthDate = anniversaryDate
@@ -348,6 +314,7 @@ function SignUp(props) {
                 birthday: anniversaryDate,
                 country: "fr",
                 phoneNumber: "065654343",
+                profilePicture: images + '.jpg'
             }),
         });
 
@@ -357,37 +324,16 @@ function SignUp(props) {
         if (body.result == true) {
             props.addToken(body.token);
             console.log("log du token signup", body.token);
+            setUserExists(true)
 
-            
-    // Enregistrement de la photo en cloudinary puis db ***
-
-            var dataimage = new FormData();
-
-            dataimage.append('photo', {
-                uri: images,
-                type: "image",
-                name: "photo",
-                token: body.token
-
-            })
-
-            const response = await fetch(`/users/upload-profile-picture/${body.token}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/form-data' },
-                body: dataimage
-            })
-            const larep = response.json()
-            console.log('larep', larep)
-            if (larep.result) {
-                setUserExists(true)
-            }
 
         } else {
             setErrorsSignup(body.error);
-        }
+        }   
     };
+  
+    if(userExists === false) {
 
-if(userExists === false) {
     return (
         <div className="Login-page"
             style={{ backgroundImage: 'linear-gradient(rgba(255,188,62,1), rgba(255,67,67,1))' }}>
@@ -465,7 +411,7 @@ if(userExists === false) {
         </div>
     );
 } else {
-   return <Redirect to= './MapScreen/'/>
+        return (<Redirect to='/MapScreen' />)
 }
 }
 
