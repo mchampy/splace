@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { Input, Button, Card } from 'antd';
-import { Link, Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Logo from "./assets/logosplace.png";
 import DatePicker from "react-datepicker";
 
-import { sportAssets } from "./App";
-
 import { CloudinaryContext, Image } from "cloudinary-react";
-import { fetchPhotos, openUploadWidget, url } from "./CloudinaryService";
+import { fetchPhotos, openUploadWidget } from "./CloudinaryService";
 
 import 'react-upload-image-gallery/dist/style.css'
 
@@ -222,10 +220,6 @@ function SignUp(props) {
     }
 
 
-    useEffect(() => {
-        console.log('voici limage a lactualisation', images)
-    }, [images]);
-
     const [gender, setGender] = useState([
         {
             name: "Femme",
@@ -300,6 +294,7 @@ function SignUp(props) {
         handiSelected = handisport.find(e => e.isChosen).bool}
         
         console.log("envoi user vers le back");
+        
         const data = await fetch(`/users/sign-up`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -307,14 +302,14 @@ function SignUp(props) {
                 username: `${forname + ' ' + name}`,
                 email,
                 password,
-                favoriteSports: favourite,
-                bio: descriptionUser,
                 gender: genderSelected,
-                handiSport: handiSelected,
-                birthday: anniversaryDate,
                 country: "fr",
+                birthday: anniversaryDate,
+                profilePicture: images + '.jpg',
+                handiSport: handiSelected,
                 phoneNumber: "065654343",
-                profilePicture: images + '.jpg'
+                favoriteSports: favourite,
+                bio: descriptionUser 
             }),
         });
 
@@ -323,27 +318,32 @@ function SignUp(props) {
 
         if (body.result == true) {
             props.addToken(body.token);
-            console.log("log du token signup", body.token);
             setUserExists(true)
-
+            console.log("log du token signup", body.token);
 
         } else {
             setErrorsSignup(body.error);
+            console.log('err', body.error)
         }   
     };
+      
+    var tabErrorsSignup = listErrorsSignup.map((error,i) => {
+        return(<p>{error}</p>)
+      })
   
     if(userExists === false) {
 
     return (
-        <div className="Login-page"
+        <div className="Signup-page"
             style={{ backgroundImage: 'linear-gradient(rgba(255,188,62,1), rgba(255,67,67,1))' }}>
-            <img src={Logo} style={{ width: '400px', margin: '10px' }} alt='pic' />
+            <img src={Logo} style={{ width: '300px'}} alt='pic' />
 
             {/* SIGN-UP */}
 
             <div className="Sign">
                 <Card>
                     <div>
+
                         <text style={{ fontWeight: 'bold', fontSize: 20 }}>CREER UN COMPTE</text>
                     </div>
 
@@ -369,10 +369,9 @@ function SignUp(props) {
 
                     <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'stretch', justifyContent: 'space-around', flexDirection: 'row', marginBottom: 25 }}>
                         <div>
-                            <text style={{ marginLeft: 15 }}>Photo de profil : </text>
+                            <text style={{ marginLeft: 15 }}>Photo de profil : </text> 
 
                             <CloudinaryContext cloudName="dj7ntrfrj">
-
                                 <button onClick={() => beginUpload()}
                                     style={{ width: 80, height: 80, borderRadius: "50%", marginLeft: 20, padding: 0 }}
                                 >
@@ -385,10 +384,10 @@ function SignUp(props) {
                                     />)} </button>
                             </CloudinaryContext>
                         </div>
-                        <div>
+                         <div>
                             <text style={{ marginLeft: 15 }}>Description : </text>
                             <div>
-                            <Input style={{ width: 400, height: 100 }} onChange={(e) => setDescriptionUser(e.target.value)}/>
+                            <Input style={{ minWidth: 300, height: 100 }} onChange={(e) => setDescriptionUser(e.target.value)}/>
                             </div>
                         </div>
 
@@ -402,8 +401,10 @@ function SignUp(props) {
                         <text style={{ marginBottom: 10 }}>Handisport : </text>
                         {generateHandisport}
                         </div>
+                        <div style={{color:'red'}}>{tabErrorsSignup}</div>
 
-                    <Button className="Button" onClick={signUpToBack()}>Inscription</Button>
+
+                    <Button className="Button" onClick={() => signUpToBack()}>Inscription</Button>
 
                 </Card>
             </div>
@@ -420,7 +421,6 @@ function mapDispatchToProps(dispatch) {
       addToken: function (token) {
         dispatch({ type: "addToken", token });
       },
-  
     };
   }
   

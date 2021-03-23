@@ -89,7 +89,14 @@ export const sportAssets = [
   },
   {
     isChosen: false,
-    name: 'running',
+    name: 'running' ,
+    id: '5744ccdfe4b0c0459246b4b2',
+    isPicked: false,
+    img: './assets/running.png'
+  },
+  {
+    isChosen: false,
+    name: 'pilates',
     id: '5744ccdfe4b0c0459246b4b2',
     isPicked: false,
     img: './assets/running.png'

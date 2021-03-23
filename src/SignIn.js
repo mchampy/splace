@@ -12,7 +12,7 @@ function SignIn(props) {
   const [userExists, setUserExists] = useState(false);
   const [listErrorsSignin, setErrorsSignin] = useState([]);
 
-
+// envoi infos au back 
   var handleSubmitSignin = async () => {
  
       const data = await fetch(`/users/sign-in`, {
@@ -31,6 +31,10 @@ function SignIn(props) {
         setErrorsSignin(body.error)
       }
     }
+
+    var tabErrorsSignin = listErrorsSignin.map((error,i) => {
+      return(<p>{error}</p>)
+    })
   
     if (userExists) {
       return <Redirect to='/MapScreen' />
@@ -38,21 +42,21 @@ function SignIn(props) {
     
 
   return (
-    <div className="Login-page" 
-    style={{ backgroundImage: 'linear-gradient(rgba(255,188,62,1), rgba(255,67,67,1))' }}>
-      <img src={Logo} style={{width:'500px', margin:'10px'}} alt='pic' />
+    <div className="Login-page"
+    style={{ backgroundImage: 'linear-gradient(rgba(255,188,62,1), rgba(255,67,67,1))'}}>
+      <img src={Logo} style={{width:'500px', minWidth:'100px', position:'center'}} alt='pic' />
 
           {/* SIGN-IN */}
 
           <div className="Sign">
 
-            <Card style={{width:'400px'}}>
+            <Card >
                   
-            <Input onChange={(e) => setEmail(e.target.value)} className="Login-input" style={{width:320}} placeholder="email" />
+            <Input onChange={(e) => setEmail(e.target.value)} className="Login-input" style={{minWidth:100}} placeholder="email" />
 
-            <Input.Password onChange={(e) => setPassword(e.target.value)} className="Login-input" style={{width:320}} placeholder="mot de passe" />
+            <Input.Password onChange={(e) => setPassword(e.target.value)} className="Login-input" style={{minWidth:100}} placeholder="mot de passe" />
 
-            {listErrorsSignin}
+            <div style={{color:'red'}}>{tabErrorsSignin}</div>
             
             <div style={{display:'flex', justifyContent:'space-around'}}>
             <Button  className="Button" onClick={() => handleSubmitSignin()} >Se connecter</Button>
