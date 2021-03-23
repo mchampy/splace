@@ -36,7 +36,7 @@ function MapScreen(props) {
         mixed: false,
         private: true,
     });
-    const [show, setShow] = useState(false);
+    
 
     // switch event changement d'état au clic
     const handleChange = (event) => {
@@ -77,8 +77,17 @@ function MapScreen(props) {
             () => ({
                 dragend() {
                     const marker = markerRef.current
+                    console.log('marker', marker)
+                
                     if (marker !== null) {
-                        setPosition(marker.getLatLng())
+                let markerLatLng = marker.getLatLng()
+                if (markerLatLng["lng"] === undefined) {
+                    var positionMarker = {lat: markerLatLng["lat"], lng: markerLatLng["lon"]}
+                }
+                else {
+                    var positionMarker = {lat: markerLatLng["lat"], lng: markerLatLng["lng"]}
+                }
+                        setPosition(positionMarker)
                         console.log('position', position)
                     } handleConfirmCustomPlace()
                 },
