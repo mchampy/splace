@@ -197,9 +197,9 @@ function SignUp(props) {
 
     const [images, setImages] = useState([])
 
-    useEffect(() => {
-        fetchPhotos("image", setImages);
-    }, [])
+    // useEffect(() => {
+    //     fetchPhotos("image", setImages);
+    // }, [])
 
     const beginUpload = tag => {
         const uploadOptions = {
@@ -207,15 +207,17 @@ function SignUp(props) {
             tags: [tag, 'anImage'],
             uploadPreset: "splace"
         };
-        openUploadWidget(uploadOptions, (error, photos) => {
+        openUploadWidget(uploadOptions, (error, result) => {
             if (!error) {
-                console.log(photos);
-                if (photos.event === 'success') {
-                    setImages([...images, photos.info.public_id])
+                console.log('photo', result);
+                if (result.event === 'success') {
+                    setImages([...images, result.info.url])
+                    console.log('image', images)
                 }
             } else {
                 console.log(error);
             }
+            
         })
     }
 
@@ -305,7 +307,7 @@ function SignUp(props) {
                 gender: genderSelected,
                 country: "fr",
                 birthday: anniversaryDate,
-                profilePicture: images + '.jpg',
+                profilePicture: images + '',
                 handiSport: handiSelected,
                 phoneNumber: "065654343",
                 favoriteSports: favourite,

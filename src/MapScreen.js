@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import './App.css';
 import { Button, Card, Menu, Input } from 'antd';
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -486,8 +486,11 @@ function MapScreen(props) {
     })
 
     // logout
-    const handleLogout = async () => {
-
+    const handleLogout = () => {
+        props.addToken('')
+        if(props.token === undefined) {
+            return <Redirect to='/' />
+        }
     }
 
     return (
